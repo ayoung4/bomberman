@@ -38,7 +38,12 @@ export class MyGameEngine extends GameEngine {
         for (let x = 0; x < this.worldSettings.height; x++) {
             this.map.push([]);
             for (let y = 0; y < this.worldSettings.width; y++) {
-                this.map[x].push(0);
+                if (x === 0 || x === this.worldSettings.height - 1
+                    || y === 0 || y === this.worldSettings.width - 1) {
+                    this.map[x].push(1);
+                } else {
+                    this.map[x].push(0);
+                }
             }
         }
     }
@@ -49,9 +54,9 @@ export class MyGameEngine extends GameEngine {
         const velocity = new serialize.TwoVector(0, 0);
         const player = new Player(this.world.idCount++, position, velocity);
         player.playerId = playerId;
-        
+
         this.world.idCount++;
-        
+
         this.addObjectToWorld(player);
         console.log(`player added: ${player.id} ${player.playerId}`);
 
@@ -88,7 +93,7 @@ export class MyGameEngine extends GameEngine {
     processInput(inputData, playerId) {
 
         super.processInput(inputData, playerId);
-    
+
         const player = this.world.getPlayerObject<Player>(playerId);
 
         if (player) {
